@@ -4,6 +4,7 @@ namespace border_status\Services;
 
 class ACF
 {
+  private $borderPoints;
 
   public function __construct()
   {
@@ -12,6 +13,8 @@ class ACF
     \add_filter('acf/settings/show_admin', [$this, 'showAdminInDashboard'], 15);
     \add_filter('acf/load_field/name=wpk_border_ports', [$this, 'populateBorderPointsChoices']);
     \add_filter('acf/save_post', [$this, 'updateBorderStatus'], 15);
+
+    $this->borderPoints = new BorderPoints();
   }
 
   public function initPlugin(): void
@@ -38,8 +41,8 @@ class ACF
     $field['choices'] = [];
     $borderPoints = [];
 
-    $borderPointsName = $borderPointsCls->getPortsData('port_name');
-    $borderPointsExtraName = $borderPointsCls->getPortsData('crossing_name');
+    $borderPointsName = $this->borderPoints->getPortsData('port_name');
+    $borderPointsExtraName = $this->borderPoints->getPortsData('crossing_name');
 
     foreach ( $borderPointsName as $borderPointId => $borderPointName ) {
       $borderPoints[$borderPointId] = $borderPointName;
@@ -60,6 +63,7 @@ class ACF
 
   public function updateBorderStatus()
   {
+    $this->borderPoints->setChoosenPoints();
 
     $schedule->saveData();
   }
