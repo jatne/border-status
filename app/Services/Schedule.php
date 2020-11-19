@@ -33,11 +33,9 @@ class Schedule
     }
   }
 
-  public function saveData() {
-    $borderPoints = new BorderPoints;
-    $borderPoints->setChoosenPoints();
-
-    $val = \json_encode($borderPoints->getChoosenPointsInfo());
-    \update_option(BORDER_POINTS_OPTION, $val);
+  public function saveData()
+  {
+    $acf = new ACF();
+    $acf->updateBorderStatus();
   }
 }

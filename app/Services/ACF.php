@@ -65,6 +65,7 @@ class ACF
   {
     $this->borderPoints->setChoosenPoints();
 
-    $schedule->saveData();
+    $val = \json_encode($this->borderPoints->getChoosenPointsInfo());
+    \update_option(BORDER_POINTS_OPTION, $val);
   }
 }
