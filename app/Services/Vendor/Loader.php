@@ -52,9 +52,9 @@ if ( ! class_exists( '\border_status\Vendor\Vendor' ) ) {
             define( 'WPK_ACF_PATH', get_stylesheet_directory() . '/includes/acf/' );
             define( 'WPK_ACF_URL', get_stylesheet_directory_uri() . '/includes/acf/' );
 
-                // Include the ACF plugin.
-                include_once( WPK_ACF_PATH . 'acf.php' );
-            }
+            // Include the ACF plugin.
+            include_once( WPK_ACF_PATH . 'acf.php' );
+          }
         }
 
     } /* end class */
