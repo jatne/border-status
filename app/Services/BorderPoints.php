@@ -1,4 +1,5 @@
 <?php
+
 namespace border_status\Services;
 
 class BorderPoints {
@@ -7,15 +8,18 @@ class BorderPoints {
   private $borderPoints;
   private $choosenPoints = [];
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->setBorderPoints();
   }
 
-  public function getBorderPoints() {
+  public function getBorderPoints()
+  {
     return $this->borderPoints;
   }
 
-  public function setBorderPoints(): void {
+  public function setBorderPoints(): void
+  {
     $xml = \simplexml_load_file(self::BORDER_POINTS_SOURCE);
 
     $this->borderPoints = $xml;
@@ -27,7 +31,8 @@ class BorderPoints {
    * @param string $border
    * @return null|array
    */
-  public function getPortsData($attribute, $id = '', $toString = true, $border = 'Mexican Border') {
+  public function getPortsData($attribute, $id = '', $toString = true, $border = 'Mexican Border')
+  {
     $xml = $this->borderPoints;
     $ports = '';
 
@@ -58,17 +63,20 @@ class BorderPoints {
     return $portsData;
   }
 
-  public function setChoosenPoints() {
+  public function setChoosenPoints()
+  {
     $ports = \get_field('wpk_border_ports', 'option') ? \get_field('wpk_border_ports', 'option') : [];
 
     $this->choosenPoints = $ports;
   }
 
-  public function getChoosenPoints() {
+  public function getChoosenPoints()
+  {
     return $this->choosenPoints;
   }
 
-  public function getChoosenPointsInfo() {
+  public function getChoosenPointsInfo()
+  {
     $ports = $this->getChoosenPoints();
 
     if ( !count($ports) ) {

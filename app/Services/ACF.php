@@ -1,17 +1,12 @@
 <?php
+
 namespace border_status\Services;
 
-use border_status\Services\BorderPoints as BorderPoints;
-use border_status\Services\Schedule;
+class ACF
+{
 
-class ACF {
-  private $version;
-
-  public function __construct() {
-    $this->init();
-  }
-
-  public function init() {
+  public function __construct()
+  {
     \add_action('acf/init', [$this, 'initPlugin'], 15);
     \add_filter('acf/settings/url', [$this, 'registerUrl'], 15);
     \add_filter('acf/settings/show_admin', [$this, 'showAdminInDashboard'], 15);
@@ -19,24 +14,27 @@ class ACF {
     \add_filter('acf/save_post', [$this, 'updateBorderStatus'], 15);
   }
 
-  public function initPlugin(): void {
-    if ( \function_exists('acf_add_local_field_group') ) {
-      if ( \file_exists(DIR . 'data/acf-fields.php') ) {
+  public function initPlugin(): void
+  {
+    if (\function_exists('acf_add_local_field_group')) {
+      if (\file_exists(DIR . 'data/acf-fields.php')) {
         require_once DIR . 'data/acf-fields.php';
       }
     }
   }
 
-  public function registerUrl(): string {
+  public function registerUrl(): string
+  {
     return WPK_ACF_URL;
   }
 
-  public function showAdminInDashboard(): bool {
+  public function showAdminInDashboard(): bool
+  {
     return false;
   }
 
-  public function populateBorderPointsChoices($field): array {
-    $borderPointsCls = new BorderPoints;
+  public function populateBorderPointsChoices($field): array
+  {
     $field['choices'] = [];
     $borderPoints = [];
 
@@ -60,8 +58,8 @@ class ACF {
     return $field;
   }
 
-  public function updateBorderStatus() {
-    $schedule = new Schedule;
+  public function updateBorderStatus()
+  {
 
     $schedule->saveData();
   }
