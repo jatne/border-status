@@ -1,6 +1,6 @@
 <?php
 
-namespace border_status;
+namespace BorderStatus;
 
 /**
  * Class App - Main application class to bootstrap another parts

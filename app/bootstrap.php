@@ -1,6 +1,6 @@
 <?php
 
-namespace border_status;
+namespace BorderStatus;
 
 /**
  * Load Composer if exists

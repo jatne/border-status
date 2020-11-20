@@ -1,6 +1,6 @@
 <?php
 
-namespace border_status\Services;
+namespace BorderStatus\Services;
 
 class BorderPoints {
   private const BORDER_POINTS_SOURCE = 'https://bwt.cbp.gov/xml/bwt.xml';
