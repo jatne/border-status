@@ -8,6 +8,7 @@ class Schedule
   private const SCHEDULE_INTERVAL_KEY = 'every_30_mins';
   private const SCHEDULE_INTERVAL_VALUE = 1800;
   private const SCHEDULE_INTERVAL_NAME = 'every 30 minutes';
+  private const SCHEDULE_EVENT = 'wpk_update_border_status';
 
   /**
    * Setting up custom CRON
@@ -24,6 +25,7 @@ class Schedule
     /**
      * Hooking action for CRON
      */
+    \add_action(self::SCHEDULE_EVENT, [$this, 'saveData']);
   }
 
   /**
@@ -49,8 +51,8 @@ class Schedule
    */
   public function initSchedule()
   {
-    if (!\wp_next_scheduled('wpk_cron_hook')) {
-      \wp_schedule_event(\time(), self::SCHEDULE_INTERVAL_KEY, 'wpk_cron_hook');
+    if (!\wp_next_scheduled(self::SCHEDULE_EVENT)) {
+      \wp_schedule_event(\time(), self::SCHEDULE_INTERVAL_KEY, self::SCHEDULE_EVENT);
     }
   }
 
