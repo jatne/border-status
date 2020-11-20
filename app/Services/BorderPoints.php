@@ -120,11 +120,14 @@ class BorderPoints {
       return false;
     }
 
+    $lastUpdatedTime = $this->getPortsData('../last_updated_time');
+    $lastUpdatedDate = $this->getPortsData('../last_updated_date');
+
     $pointData = [
       'saving_time' => time(),
       'update' => [
-        'date' => reset($this->getPortsData('../last_updated_date')),
-        'time' => reset($this->getPortsData('../last_updated_time')),
+        'date' => reset($lastUpdatedDate),
+        'time' => reset($lastUpdatedTime),
       ],
     ];
 
@@ -149,7 +152,7 @@ class BorderPoints {
             'standard' => $this->getPortsData('pedestrian_lanes/standard_lanes/delay_minutes', $port),
             'ready'    => $this->getPortsData('pedestrian_lanes/ready_lanes/delay_minutes', $port),
           ],
-        ]
+        ],
       ];
     }
 
