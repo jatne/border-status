@@ -49,6 +49,8 @@ if ( ! class_exists( '\BorderStatus\Vendor\Vendor' ) ) {
         private function loadACF() {
           if ( !\class_exists( '\ACF' ) ) {
             // Define path and URL to the ACF plugin.
+            define( 'WPK_ACF_PATH', DIR . '/includes/acf/' );
+            define( 'WPK_ACF_URL', URL . '/includes/acf/' );
 
             // Include the ACF plugin.
             include_once( WPK_ACF_PATH . 'acf.php' );
