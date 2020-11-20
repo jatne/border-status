@@ -25,6 +25,7 @@ final class App
   {
     $instance = static::instance();
 
+    Vendor\Loader::instance();
     /**
      * Services definitions and loading
      */
