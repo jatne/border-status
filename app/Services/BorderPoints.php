@@ -58,7 +58,7 @@ class BorderPoints {
    */
   public function getPortsData(string $attribute, ?string $id = null, bool $toString = true, string $border = 'Mexican Border')
   {
-    $xml = $this->borderPoints;
+    $xml = $this->getBorderPoints();
     $ports = '';
 
     if ( !$xml ) {
