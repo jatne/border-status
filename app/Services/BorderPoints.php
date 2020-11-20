@@ -117,7 +117,7 @@ class BorderPoints {
     $ports = $this->getChoosenPoints();
 
     if ( !count($ports) ) {
-      throw new \Exception('Empty ports');
+      return false;
     }
 
     $pointData = [
