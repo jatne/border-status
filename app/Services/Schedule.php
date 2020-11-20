@@ -2,7 +2,6 @@
 
 namespace BorderStatus\Services;
 
-
 class Schedule
 {
   private const SCHEDULE_INTERVAL_KEY = 'every_30_mins';
@@ -51,9 +50,19 @@ class Schedule
    */
   public function initSchedule()
   {
+    \register_deactivation_hook(__FILE__, [$this, 'deactivateSchedule']);
+
     if (!\wp_next_scheduled(self::SCHEDULE_EVENT)) {
       \wp_schedule_event(\time(), self::SCHEDULE_INTERVAL_KEY, self::SCHEDULE_EVENT);
     }
+  }
+
+  /**
+   * Clean the scheduler on deactivation
+   * @return void
+   */
+  public function deactivateSchedule() {
+    \wp_clear_scheduled_hook(self::SCHEDULE_EVENT);
   }
 
   /**
@@ -61,6 +70,7 @@ class Schedule
    *
    * @return void
    */
+  public function saveData(): void
   {
     $acf = new ACF();
     $acf->updateBorderStatus();
