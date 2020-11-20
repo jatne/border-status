@@ -2,22 +2,45 @@
 
 namespace BorderStatus\Services;
 
+use SimpleXMLElement;
+
+/**
+ *
+ * @package BorderStatus\Services
+ */
 class BorderPoints {
+  /**
+   * XML Source
+   * @link https://bwt.cbp.gov/
+   */
   private const BORDER_POINTS_SOURCE = 'https://bwt.cbp.gov/xml/bwt.xml';
 
   private $borderPoints;
   private $choosenPoints = [];
 
+  /**
+   * Initializing all border points
+   *
+   * @return void
+   */
   public function __construct()
   {
     $this->setBorderPoints();
   }
 
-  public function getBorderPoints()
+  /**
+   *
+   * @return SimpleXMLElement
+   */
+  public function getBorderPoints(): SimpleXMLElement
   {
     return $this->borderPoints;
   }
 
+  /**
+   *
+   * @return void
+   */
   public function setBorderPoints(): void
   {
     $xml = \simplexml_load_file(self::BORDER_POINTS_SOURCE);
@@ -27,11 +50,13 @@ class BorderPoints {
 
   /**
    *
-   * @param mixed $attribute
+   * @param string $attribute
+   * @param null|string $id
+   * @param bool $toString
    * @param string $border
    * @return null|array
    */
-  public function getPortsData($attribute, $id = '', $toString = true, $border = 'Mexican Border')
+  public function getPortsData(string $attribute, ?string $id = null, bool $toString = true, string $border = 'Mexican Border')
   {
     $xml = $this->borderPoints;
     $ports = '';
@@ -63,18 +88,30 @@ class BorderPoints {
     return $portsData;
   }
 
-  public function setChoosenPoints()
+  /**
+   *
+   * @return void
+   */
+  public function setChoosenPoints(): void
   {
     $ports = \get_field('wpk_border_ports', 'option') ? \get_field('wpk_border_ports', 'option') : [];
 
     $this->choosenPoints = $ports;
   }
 
+  /**
+   *
+   * @return mixed.|array
+   */
   public function getChoosenPoints()
   {
     return $this->choosenPoints;
   }
 
+/**
+ *
+ * @return null|(int|array)[]
+ */
   public function getChoosenPointsInfo()
   {
     $ports = $this->getChoosenPoints();

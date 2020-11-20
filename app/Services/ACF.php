@@ -2,6 +2,10 @@
 
 namespace BorderStatus\Services;
 
+/**
+ *
+ * @package BorderStatus\Services
+ */
 class ACF
 {
   private $borderPoints;
@@ -17,6 +21,11 @@ class ACF
     $this->borderPoints = new BorderPoints();
   }
 
+  /**
+   * Load ACF Fields
+   *
+   * @return void
+   */
   public function initPlugin(): void
   {
     if (\function_exists('acf_add_local_field_group')) {
@@ -26,17 +35,33 @@ class ACF
     }
   }
 
+  /**
+   * Register ACF URL
+   *
+   * @return string
+   */
   public function registerUrl(): string
   {
     return WPK_ACF_URL;
   }
 
+  /**
+   * Hiding ACF in dashboard
+   *
+   * @return bool
+   */
   public function showAdminInDashboard(): bool
   {
     return false;
   }
 
-  public function populateBorderPointsChoices($field): array
+  /**
+   * Adding choices to ACF field based on choosen points
+   *
+   * @param array $field
+   * @return array
+   */
+  public function populateBorderPointsChoices(array $field): array
   {
     $field['choices'] = [];
     $borderPoints = [];
@@ -61,7 +86,11 @@ class ACF
     return $field;
   }
 
-  public function updateBorderStatus()
+  /**
+   * Updating Border Status
+   *
+   * @return void
+   */
   {
     $this->borderPoints->setChoosenPoints();
 

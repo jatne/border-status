@@ -9,14 +9,30 @@ class Schedule
   private const SCHEDULE_INTERVAL_VALUE = 1800;
   private const SCHEDULE_INTERVAL_NAME = 'every 30 minutes';
 
+  /**
+   * Setting up custom CRON
+   * @return void
+   */
   public function __construct()
   {
+    /**
+     * Creating custom CRON interval
+     */
     \add_filter('cron_schedules', [$this, 'customCronInterval']);
     \add_action('admin_init', [$this, 'initSchedule']);
-    \add_action('wpk_cron_hook', [$this, 'saveData']);
+
+    /**
+     * Hooking action for CRON
+     */
   }
 
-  public function customCronInterval($schedules)
+  /**
+   * Setting up custom interval
+   *
+   * @param array $schedules
+   * @return array
+   */
+  public function customCronInterval(array $schedules): array
   {
     $schedules[self::SCHEDULE_INTERVAL_KEY] = [
       'interval' => self::SCHEDULE_INTERVAL_VALUE,
@@ -26,6 +42,11 @@ class Schedule
     return $schedules;
   }
 
+  /**
+   * Initializing schedule
+   *
+   * @return void
+   */
   public function initSchedule()
   {
     if (!\wp_next_scheduled('wpk_cron_hook')) {
@@ -33,7 +54,11 @@ class Schedule
     }
   }
 
-  public function saveData()
+  /**
+   * Updating border status
+   *
+   * @return void
+   */
   {
     $acf = new ACF();
     $acf->updateBorderStatus();
