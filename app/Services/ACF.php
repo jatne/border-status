@@ -12,7 +12,7 @@ class ACF
 
   public function __construct()
   {
-    \add_action('acf/init', [$this, 'initPlugin'], 15);
+    \add_action('acf/init', [$this, 'loadAcfFields'], 15);
     \add_filter('acf/settings/url', [$this, 'registerUrl'], 15);
     \add_filter('acf/settings/show_admin', [$this, 'showAdminInDashboard'], 15);
     \add_filter('acf/load_field/name=wpk_border_ports', [$this, 'populateBorderPointsChoices']);
@@ -26,7 +26,7 @@ class ACF
    *
    * @return void
    */
-  public function initPlugin(): void
+  public function loadAcfFields(): void
   {
     if (\function_exists('acf_add_local_field_group')) {
       if (\file_exists(DIR . 'data/acf-fields.php')) {
@@ -91,10 +91,14 @@ class ACF
    *
    * @return void
    */
+  public function updateBorderStatus(): void
   {
     $this->borderPoints->setChoosenPoints();
 
-    $val = \json_encode($this->borderPoints->getChoosenPointsInfo());
+    $pointsInfo = $this->borderPoints->getChoosenPointsInfo();
+
+    $val = $pointsInfo ? \json_encode($pointsInfo) : '';
+
     \update_option(BORDER_POINTS_OPTION, $val);
   }
 }
