@@ -14,7 +14,7 @@ class ACF
   {
     \add_action('acf/init', [$this, 'loadAcfFields'], 15);
     \add_filter('acf/settings/url', [$this, 'registerUrl'], 15);
-    \add_filter('acf/settings/show_admin', [$this, 'showAdminInDashboard'], 15);
+    \add_filter('acf/settings/show_admin', [$this, 'hideAdminInDashboard'], 15);
     \add_filter('acf/load_field/name=wpk_border_ports', [$this, 'populateBorderPointsChoices']);
     \add_filter('acf/save_post', [$this, 'updateBorderStatus'], 15);
 
@@ -50,7 +50,7 @@ class ACF
    *
    * @return bool
    */
-  public function showAdminInDashboard(): bool
+  public function hideAdminInDashboard(): bool
   {
     return false;
   }
