@@ -49,8 +49,8 @@ class BorderPoints {
    *
    * @param string $attribute
    * @param null|string $id
-   * @param bool $toString
    * @param string $border
+   * @param bool $toString
    * @return null|array
    */
   public function getPortsData(string $attribute, ?string $id = null, string $border = 'Mexican Border', bool $toString = true)
