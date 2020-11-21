@@ -4,10 +4,6 @@ namespace BorderStatus\Services;
 
 use SimpleXMLElement;
 
-/**
- *
- * @package BorderStatus\Services
- */
 class BorderPoints {
   /**
    * XML Source
