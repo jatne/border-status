@@ -2,6 +2,8 @@
 
 namespace BorderStatus;
 
+use BorderStatus\Vendor\Loader;
+
 /**
  * Class App - Main application class to bootstrap another parts
  */
@@ -25,7 +27,7 @@ final class App
   {
     $instance = static::instance();
 
-    Vendor\Loader::instance();
+    Loader::instance();
     /**
      * Services definitions and loading
      */
