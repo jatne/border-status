@@ -2,10 +2,6 @@
 
 namespace BorderStatus\Services;
 
-/**
- *
- * @package BorderStatus\Services
- */
 class ACF
 {
   private $borderPoints;
