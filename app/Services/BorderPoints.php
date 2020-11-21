@@ -56,7 +56,7 @@ class BorderPoints {
    * @param string $border
    * @return null|array
    */
-  public function getPortsData(string $attribute, ?string $id = null, bool $toString = true, string $border = 'Mexican Border')
+  public function getPortsData(string $attribute, ?string $id = null, string $border = 'Mexican Border', bool $toString = true)
   {
     $xml = $this->getBorderPoints();
     $ports = '';
