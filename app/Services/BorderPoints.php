@@ -1,21 +1,45 @@
 <?php
-namespace border_status\Services;
 
+namespace BorderStatus\Services;
+
+use SimpleXMLElement;
+
+/**
+ *
+ * @package BorderStatus\Services
+ */
 class BorderPoints {
+  /**
+   * XML Source
+   * @link https://bwt.cbp.gov/
+   */
   private const BORDER_POINTS_SOURCE = 'https://bwt.cbp.gov/xml/bwt.xml';
 
   private $borderPoints;
   private $choosenPoints = [];
 
-  public function __construct() {
+  /**
+   * Initializing all border points
+   */
+  public function __construct()
+  {
     $this->setBorderPoints();
   }
 
-  public function getBorderPoints() {
+  /**
+   *
+   * @return SimpleXMLElement
+   */
+  public function getBorderPoints(): SimpleXMLElement
+  {
     return $this->borderPoints;
   }
 
-  public function setBorderPoints(): void {
+  /**
+   * Setting up border points
+   */
+  public function setBorderPoints(): void
+  {
     $xml = \simplexml_load_file(self::BORDER_POINTS_SOURCE);
 
     $this->borderPoints = $xml;
@@ -23,12 +47,15 @@ class BorderPoints {
 
   /**
    *
-   * @param mixed $attribute
+   * @param string $attribute
+   * @param null|string $id
    * @param string $border
+   * @param bool $toString
    * @return null|array
    */
-  public function getPortsData($attribute, $id = '', $toString = true, $border = 'Mexican Border') {
-    $xml = $this->borderPoints;
+  public function getPortsData(string $attribute, ?string $id = null, string $border = 'Mexican Border', bool $toString = true)
+  {
+    $xml = $this->getBorderPoints();
     $ports = '';
 
     if ( !$xml ) {
@@ -58,28 +85,45 @@ class BorderPoints {
     return $portsData;
   }
 
-  public function setChoosenPoints() {
+  /**
+   * Setting up choosen points
+   */
+  public function setChoosenPoints(): void
+  {
     $ports = \get_field('wpk_border_ports', 'option') ? \get_field('wpk_border_ports', 'option') : [];
 
     $this->choosenPoints = $ports;
   }
 
-  public function getChoosenPoints() {
+  /**
+   *
+   * @return mixed
+   */
+  public function getChoosenPoints()
+  {
     return $this->choosenPoints;
   }
 
-  public function getChoosenPointsInfo() {
+/**
+ *
+ * @return null|array
+ */
+  public function getChoosenPointsInfo(): ?array
+  {
     $ports = $this->getChoosenPoints();
 
     if ( !count($ports) ) {
-      throw new \Exception('Empty ports');
+      return null;
     }
+
+    $lastUpdatedTime = $this->getPortsData('../last_updated_time');
+    $lastUpdatedDate = $this->getPortsData('../last_updated_date');
 
     $pointData = [
       'saving_time' => time(),
       'update' => [
-        'date' => reset($this->getPortsData('../last_updated_date')),
-        'time' => reset($this->getPortsData('../last_updated_time')),
+        'date' => reset($lastUpdatedDate),
+        'time' => reset($lastUpdatedTime),
       ],
     ];
 
@@ -104,7 +148,7 @@ class BorderPoints {
             'standard' => $this->getPortsData('pedestrian_lanes/standard_lanes/delay_minutes', $port),
             'ready'    => $this->getPortsData('pedestrian_lanes/ready_lanes/delay_minutes', $port),
           ],
-        ]
+        ],
       ];
     }
 

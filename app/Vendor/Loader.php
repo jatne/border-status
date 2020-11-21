@@ -1,8 +1,8 @@
 <?php
 
-namespace border_status\Vendor;
+namespace BorderStatus\Vendor;
 
-if ( ! class_exists( '\border_status\Vendor\Vendor' ) ) {
+if ( ! class_exists( '\BorderStatus\Vendor\Vendor' ) ) {
 
     class Loader {
 
@@ -49,12 +49,12 @@ if ( ! class_exists( '\border_status\Vendor\Vendor' ) ) {
         private function loadACF() {
           if ( !\class_exists( '\ACF' ) ) {
             // Define path and URL to the ACF plugin.
-            define( 'WPK_ACF_PATH', get_stylesheet_directory() . '/includes/acf/' );
-            define( 'WPK_ACF_URL', get_stylesheet_directory_uri() . '/includes/acf/' );
+            define( 'WPK_ACF_PATH', DIR . '/includes/acf/' );
+            define( 'WPK_ACF_URL', URL . '/includes/acf/' );
 
-                // Include the ACF plugin.
-                include_once( WPK_ACF_PATH . 'acf.php' );
-            }
+            // Include the ACF plugin.
+            include_once( WPK_ACF_PATH . 'acf.php' );
+          }
         }
 
     } /* end class */

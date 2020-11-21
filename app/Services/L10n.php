@@ -1,6 +1,6 @@
 <?php
 
-namespace border_status\Services;
+namespace BorderStatus\Services;
 
 class L10n
 {

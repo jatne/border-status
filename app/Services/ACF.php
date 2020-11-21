@@ -1,47 +1,67 @@
 <?php
-namespace border_status\Services;
 
-use border_status\Services\BorderPoints as BorderPoints;
-use border_status\Services\Schedule;
+namespace BorderStatus\Services;
 
-class ACF {
-  private $version;
+class ACF
+{
+  private $borderPoints;
 
-  public function __construct() {
-    $this->init();
-  }
-
-  public function init() {
-    \add_action('acf/init', [$this, 'initPlugin'], 15);
+  public function __construct()
+  {
+    \add_action('acf/init', [$this, 'loadAcfFields'], 15);
     \add_filter('acf/settings/url', [$this, 'registerUrl'], 15);
-    \add_filter('acf/settings/show_admin', [$this, 'showAdminInDashboard'], 15);
+    \add_filter('acf/settings/show_admin', [$this, 'hideAdminInDashboard'], 15);
     \add_filter('acf/load_field/name=wpk_border_ports', [$this, 'populateBorderPointsChoices']);
     \add_filter('acf/save_post', [$this, 'updateBorderStatus'], 15);
+
+    $this->borderPoints = new BorderPoints();
   }
 
-  public function initPlugin(): void {
-    if ( \function_exists('acf_add_local_field_group') ) {
-      if ( \file_exists(DIR . 'data/acf-fields.php') ) {
+  /**
+   * Load ACF Fields
+   */
+  public function loadAcfFields(): void
+  {
+    if (\function_exists('acf_add_local_field_group')) {
+      if (\file_exists(DIR . 'data/acf-fields.php')) {
         require_once DIR . 'data/acf-fields.php';
       }
     }
   }
 
-  public function registerUrl(): string {
+  /**
+   * Register ACF URL
+   *
+   * @return string
+   */
+  public function registerUrl(): string
+  {
     return WPK_ACF_URL;
   }
 
-  public function showAdminInDashboard(): bool {
+  /**
+   * Hiding ACF in dashboard
+   *
+   * @return bool
+   */
+  public function hideAdminInDashboard(): bool
+  {
     return false;
   }
 
-  public function populateBorderPointsChoices($field): array {
-    $borderPointsCls = new BorderPoints;
+  /**
+   * Adding choices to ACF field based on choosen points
+   *
+   * @param array $field
+   * @return array
+   */
+  public function populateBorderPointsChoices(array $field): array
+  {
     $field['choices'] = [];
     $borderPoints = [];
 
-    $borderPointsName = $borderPointsCls->getPortsData('port_name');
-    $borderPointsExtraName = $borderPointsCls->getPortsData('crossing_name');
+    $borderPointsName = $this->borderPoints->getPortsData('port_name');
+    $borderPointsExtraName = $this->borderPoints->getPortsData('crossing_name');
 
     foreach ( $borderPointsName as $borderPointId => $borderPointName ) {
       $borderPoints[$borderPointId] = $borderPointName;
@@ -60,9 +80,17 @@ class ACF {
     return $field;
   }
 
-  public function updateBorderStatus() {
-    $schedule = new Schedule;
+  /**
+   * Updating Border Status
+   */
+  public function updateBorderStatus(): void
+  {
+    $this->borderPoints->setChoosenPoints();
 
-    $schedule->saveData();
+    $pointsInfo = $this->borderPoints->getChoosenPointsInfo();
+
+    $val = $pointsInfo ? \json_encode($pointsInfo) : '';
+
+    \update_option(BORDER_POINTS_OPTION, $val);
   }
 }

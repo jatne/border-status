@@ -1,21 +1,39 @@
 <?php
 
-namespace border_status\Services;
+namespace BorderStatus\Services;
 
-use border_status\Services\BorderPoints;
-
-class Schedule {
+class Schedule
+{
   private const SCHEDULE_INTERVAL_KEY = 'every_30_mins';
   private const SCHEDULE_INTERVAL_VALUE = 1800;
   private const SCHEDULE_INTERVAL_NAME = 'every 30 minutes';
+  private const SCHEDULE_EVENT = 'wpk_update_border_status';
 
-  public function __construct() {
+  /**
+   * Setting up custom CRON
+   */
+  public function __construct()
+  {
+    /**
+     * Creating custom CRON interval
+     */
     \add_filter('cron_schedules', [$this, 'customCronInterval']);
     \add_action('admin_init', [$this, 'initSchedule']);
-    \add_action('wpk_cron_hook', [$this, 'saveData']);
+
+    /**
+     * Hooking action for CRON
+     */
+    \add_action(self::SCHEDULE_EVENT, [$this, 'saveData']);
   }
 
-  public function customCronInterval($schedules) {
+  /**
+   * Setting up custom interval
+   *
+   * @param array $schedules
+   * @return array
+   */
+  public function customCronInterval(array $schedules): array
+  {
     $schedules[self::SCHEDULE_INTERVAL_KEY] = [
       'interval' => self::SCHEDULE_INTERVAL_VALUE,
       'display' => self::SCHEDULE_INTERVAL_NAME,
@@ -24,17 +42,31 @@ class Schedule {
     return $schedules;
   }
 
-  public function initSchedule() {
-    if ( !\wp_next_scheduled('wpk_cron_hook') ) {
-      \wp_schedule_event(\time(), self::SCHEDULE_INTERVAL_KEY, 'wpk_cron_hook');
+  /**
+   * Initializing schedule
+   */
+  public function initSchedule()
+  {
+    \register_deactivation_hook(__FILE__, [$this, 'deactivateSchedule']);
+
+    if (!\wp_next_scheduled(self::SCHEDULE_EVENT)) {
+      \wp_schedule_event(\time(), self::SCHEDULE_INTERVAL_KEY, self::SCHEDULE_EVENT);
     }
   }
 
-  public function saveData() {
-    $borderPoints = new BorderPoints;
-    $borderPoints->setChoosenPoints();
+  /**
+   * Clean the scheduler on deactivation
+   */
+  public function deactivateSchedule() {
+    \wp_clear_scheduled_hook(self::SCHEDULE_EVENT);
+  }
 
-    $val = \json_encode($borderPoints->getChoosenPointsInfo());
-    \update_option(BORDER_POINTS_OPTION, $val);
+  /**
+   * Updating border status
+   */
+  public function saveData(): void
+  {
+    $acf = new ACF();
+    $acf->updateBorderStatus();
   }
 }
