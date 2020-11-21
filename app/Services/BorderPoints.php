@@ -20,8 +20,6 @@ class BorderPoints {
 
   /**
    * Initializing all border points
-   *
-   * @return void
    */
   public function __construct()
   {
@@ -38,8 +36,7 @@ class BorderPoints {
   }
 
   /**
-   *
-   * @return void
+   * Setting up border points
    */
   public function setBorderPoints(): void
   {
@@ -89,8 +86,7 @@ class BorderPoints {
   }
 
   /**
-   *
-   * @return void
+   * Setting up choosen points
    */
   public function setChoosenPoints(): void
   {
@@ -101,7 +97,7 @@ class BorderPoints {
 
   /**
    *
-   * @return mixed.|array
+   * @return mixed
    */
   public function getChoosenPoints()
   {

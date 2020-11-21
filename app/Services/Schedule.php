@@ -11,7 +11,6 @@ class Schedule
 
   /**
    * Setting up custom CRON
-   * @return void
    */
   public function __construct()
   {
@@ -45,8 +44,6 @@ class Schedule
 
   /**
    * Initializing schedule
-   *
-   * @return void
    */
   public function initSchedule()
   {
@@ -59,7 +56,6 @@ class Schedule
 
   /**
    * Clean the scheduler on deactivation
-   * @return void
    */
   public function deactivateSchedule() {
     \wp_clear_scheduled_hook(self::SCHEDULE_EVENT);
@@ -67,8 +63,6 @@ class Schedule
 
   /**
    * Updating border status
-   *
-   * @return void
    */
   public function saveData(): void
   {

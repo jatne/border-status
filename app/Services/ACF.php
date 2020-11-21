@@ -19,8 +19,6 @@ class ACF
 
   /**
    * Load ACF Fields
-   *
-   * @return void
    */
   public function loadAcfFields(): void
   {
@@ -84,8 +82,6 @@ class ACF
 
   /**
    * Updating Border Status
-   *
-   * @return void
    */
   public function updateBorderStatus(): void
   {
