@@ -106,14 +106,14 @@ class BorderPoints {
 
 /**
  *
- * @return null|(int|array)[]
+ * @return null|array
  */
-  public function getChoosenPointsInfo()
+  public function getChoosenPointsInfo(): ?array
   {
     $ports = $this->getChoosenPoints();
 
     if ( !count($ports) ) {
-      return false;
+      return null;
     }
 
     $lastUpdatedTime = $this->getPortsData('../last_updated_time');
