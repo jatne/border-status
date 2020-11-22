@@ -37,6 +37,7 @@ final class App
       Services\BorderPoints::class => new Services\BorderPoints,
       Services\ACF::class => new Services\ACF,
       Services\Schedule::class => new Services\Schedule,
+      Services\Shortcodes::class => new Services\Shortcodes,
     ];
   }
 
